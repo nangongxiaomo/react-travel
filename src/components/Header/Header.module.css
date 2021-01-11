@@ -1,0 +1,32 @@
+.custom-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.left {
+  display: flex;
+  align-items: center;
+}
+.btn {
+  margin-right: 15px;
+}
+.logo {
+  height: 10vmin;
+  animation: spin infinite 20s linear;
+}
+.title {
+  color: #fff !important;
+  margin-bottom: 0 !important;
+  margin-right: 25px;
+}
+.right {
+  float: right;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}

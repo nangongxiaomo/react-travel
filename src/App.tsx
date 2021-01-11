@@ -1,8 +1,14 @@
 import React from 'react'
-import './App.css'
+import { CustomMenu, Footer, Header } from './components'
 
 function App() {
-  return <div className="App"></div>
+  return (
+    <>
+      <Header />
+      <CustomMenu />
+      <Footer />
+    </>
+  )
 }
 
 export default App
