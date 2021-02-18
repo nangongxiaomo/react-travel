@@ -2,16 +2,19 @@ import React from 'react'
 import { Layout, Typography, Input, Button } from 'antd'
 import logo from '../../common/images/logo.svg'
 import styles from './Header.module.css'
+import { Link } from 'react-router-dom'
 
 export const Header: React.FC = () => {
   return (
     <Layout.Header>
       <div className={styles['custom-header']}>
         <div className={styles.left}>
-          <img className={styles.logo} src={logo} alt="" />
-          <Typography.Title className={styles.title} level={3}>
-            React TypeScript
-          </Typography.Title>
+          <Link to="/" style={{display:'flex', alignItems: 'center'}}>
+            <img className={styles.logo} src={logo} alt="" />
+            <Typography.Title className={styles.title} level={3}>
+              React TypeScript
+            </Typography.Title>
+          </Link>
           <Input.Search
             style={{ width: '20vw' }}
             placeholder="请输入搜索内容"
