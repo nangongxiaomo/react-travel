@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { memo } from 'react'
 import style from './moreMenu.module.css'
 import { sideMenuList } from './mock'
 import { Menu } from 'antd'
 import { GifOutlined } from '@ant-design/icons'
 
-export const MoreMenu: React.FC = () => {
+export const MoreMenu: React.FC = memo(() => {
   return (
     <Menu mode="vertical" className={style['more-menu']}>
       {sideMenuList.map((item, index) => (
@@ -41,4 +41,4 @@ export const MoreMenu: React.FC = () => {
       ))}
     </Menu>
   )
-}
+})

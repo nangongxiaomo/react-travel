@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {memo} from 'react'
 import { Layout, Typography, Input, Button } from 'antd'
 import logo from '../../common/images/logo.svg'
 import styles from './Header.module.css'
 import { Link } from 'react-router-dom'
 
-export const Header: React.FC = () => {
+export const Header: React.FC = memo(() => {
   return (
     <Layout.Header>
       <div className={styles['custom-header']}>
@@ -31,4 +31,4 @@ export const Header: React.FC = () => {
       </div>
     </Layout.Header>
   )
-}
+})

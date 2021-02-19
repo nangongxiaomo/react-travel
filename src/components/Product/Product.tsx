@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 import styles from './product.module.css'
 import { ProductImage } from './children/ProductImage'
 import { Row, Divider, Col } from 'antd'
@@ -9,7 +9,7 @@ interface Props {
   products: any[]
 }
 
-export const Product: React.FC<Props> = ({ title, image, products }) => {
+export const Product: React.FC<Props> = memo(({ title, image, products }) => {
   return (
     <div className={styles['product-content']}>
       <Divider orientation={'left'}>{title}</Divider>
@@ -107,4 +107,4 @@ export const Product: React.FC<Props> = ({ title, image, products }) => {
       </Row>
     </div>
   )
-}
+})

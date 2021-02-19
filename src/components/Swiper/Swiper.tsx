@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Image, Carousel } from 'antd'
 
 const slide = [
@@ -7,7 +7,7 @@ const slide = [
   'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3810369708,4207256531&fm=26&gp=0.jpg'
 ]
 
-export const Swiper: React.FC = () => {
+export const Swiper: React.FC = memo(() => {
   return (
     <Carousel
       style={{ textAlign: 'center', height: 250, overflow: 'hidden' }}
@@ -15,8 +15,8 @@ export const Swiper: React.FC = () => {
       effect="fade"
     >
       {slide.map(item => (
-        <Image key={item} preview={false} width='100%' src={item} />
+        <Image key={item} preview={false} width="100%" src={item} />
       ))}
     </Carousel>
   )
-}
+})

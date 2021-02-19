@@ -7,17 +7,11 @@ interface ParamsProps {
   id: string
 }
 
-interface RouteProps {
-  route?: any
-}
-
-const Detail: React.FC<RouteProps> = memo(({ route }) => {
+const Detail: React.FC = memo(() => {
   const params = useParams<ParamsProps>()
-  console.log('parent render')
   return (
     <div>
       <Link to="/detail/signIn">详情页面: {params.id}</Link>
-      {route && renderRoutes(route.routes)}
     </div>
   )
 })

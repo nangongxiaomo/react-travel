@@ -1,9 +1,10 @@
+import {memo} from 'react'
 import { CustomMenu, MoreMenu, Swiper, Product } from '../../components'
 import { Row, Col, Typography } from 'antd'
 import { productList1 } from '../../components/Product/mock'
 import pic2 from '../../common/images/sider_2019_02-04-2.png'
 
-const Home: React.FC = () => {
+const Home: React.FC = memo(() => {
   return (
     <>
       <CustomMenu />
@@ -24,6 +25,6 @@ const Home: React.FC = () => {
       />
     </>
   )
-}
+})
 
 export default Home
