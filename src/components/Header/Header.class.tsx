@@ -43,7 +43,7 @@ class HeaderComponent extends React.Component<Props> {
               }
               icon={<GlobalOutlined />}
             >
-              {this.state.language === 'zh' ? '中文' : 'English'}
+              {this.props.language === 'zh' ? '中文' : 'English'}
             </Dropdown.Button>
             <Button.Group className={styles['button-group']}>
               <Button onClick={() => history.push('register')}>注册</Button>
