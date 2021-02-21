@@ -1,10 +1,25 @@
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { MoreMenu, Swiper, Product } from '../../components'
 import { Row, Col, Typography } from 'antd'
-import { productList1 } from '../../components/Product/mock'
 import pic2 from '../../common/images/sider_2019_02-04-2.png'
+import { getRecommendList } from '../../http/api'
+
+interface State {
+  id: string
+  title: string
+  description: string
+  touristRoutes: any[]
+}
 
 const Home: React.FC = memo(() => {
+  const [hotRecommendList, setHotRecommendList] = useState<State[]>([])
+
+  useEffect(() => {
+    getRecommendList().then(res => {
+      setHotRecommendList(res)
+    })
+  }, [])
+
   return (
     <>
       {/* <CustomMenu /> */}
@@ -18,11 +33,13 @@ const Home: React.FC = memo(() => {
           </Col>
         </Row>
       </div>
-      <Product
-        title={<Typography.Title level={3}>爆款推荐</Typography.Title>}
-        image={pic2}
-        products={productList1}
-      />
+      {hotRecommendList.length > 0 ? (
+        <Product
+          title={<Typography.Title level={3}>爆款推荐</Typography.Title>}
+          image={pic2}
+          products={hotRecommendList[0].touristRoutes}
+        />
+      ) : null}
     </>
   )
 })

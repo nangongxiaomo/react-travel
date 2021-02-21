@@ -1,4 +1,3 @@
-import { Store } from 'antd/lib/form/interface'
 import { createStore } from 'redux'
 import reducer from './language/languageReducer'
 
