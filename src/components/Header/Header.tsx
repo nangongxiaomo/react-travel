@@ -11,8 +11,11 @@ import { setLanguage } from '../../store/language/actionCreators'
 
 const Header: React.FC = memo(() => {
   const history = useHistory()
-  const language = useSelector(state => state.language, shallowEqual)
-  const languageList = useSelector(state => state.languageList, shallowEqual)
+  const language = useSelector(state => state.language.language, shallowEqual)
+  const languageList = useSelector(
+    state => state.language.languageList,
+    shallowEqual
+  )
   const dispatch = useDispatch()
   // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>();
   const { t } = useTranslation()

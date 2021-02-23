@@ -1,9 +1,10 @@
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect } from 'react'
 import { MoreMenu, Swiper, Product } from '../../components'
+import { useDispatch, shallowEqual } from 'react-redux'
 import { Row, Col, Typography } from 'antd'
 import pic2 from '../../common/images/sider_2019_02-04-2.png'
-import { getRecommendList } from '../../http/api'
-
+import { getRecommendListAction } from '../../store/recommendProduct/actionCreators'
+import {useSelector} from '../../hooks/useSelector'
 interface State {
   id: string
   title: string
@@ -12,14 +13,11 @@ interface State {
 }
 
 const Home: React.FC = memo(() => {
-  const [hotRecommendList, setHotRecommendList] = useState<State[]>([])
-
+  const state = useSelector(state => state.recommendReducer.recommendList, shallowEqual)
+  const dispatch = useDispatch()
   useEffect(() => {
-    getRecommendList().then(res => {
-      setHotRecommendList(res)
-    })
-  }, [])
-
+    dispatch(getRecommendListAction())
+  }, [dispatch])
   return (
     <>
       {/* <CustomMenu /> */}
@@ -33,11 +31,11 @@ const Home: React.FC = memo(() => {
           </Col>
         </Row>
       </div>
-      {hotRecommendList.length > 0 ? (
+      {state.length > 0 ? (
         <Product
           title={<Typography.Title level={3}>爆款推荐</Typography.Title>}
           image={pic2}
-          products={hotRecommendList[0].touristRoutes}
+          products={state[0].touristRoutes}
         />
       ) : null}
     </>
