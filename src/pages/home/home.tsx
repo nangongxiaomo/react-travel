@@ -4,16 +4,13 @@ import { useDispatch, shallowEqual } from 'react-redux'
 import { Row, Col, Typography } from 'antd'
 import pic2 from '../../common/images/sider_2019_02-04-2.png'
 import { getRecommendListAction } from '../../store/recommendProduct/actionCreators'
-import {useSelector} from '../../hooks/useSelector'
-interface State {
-  id: string
-  title: string
-  description: string
-  touristRoutes: any[]
-}
+import { useSelector } from '../../hooks/useSelector'
 
 const Home: React.FC = memo(() => {
-  const state = useSelector(state => state.recommendReducer.recommendList, shallowEqual)
+  const state = useSelector(
+    state => state.recommendReducer.recommendList,
+    shallowEqual
+  )
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getRecommendListAction())
