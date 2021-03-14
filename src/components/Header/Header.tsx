@@ -1,6 +1,7 @@
-import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, shallowEqual } from 'react-redux'
+import jwt_decode, { JwtPayload as DefaultJwtPayload } from 'jwt-decode'
 import { useTranslation } from 'react-i18next'
 import { Layout, Typography, Input, Button, Dropdown, Menu } from 'antd'
 import { GlobalOutlined } from '@ant-design/icons'
@@ -8,21 +9,41 @@ import logo from '../../common/images/logo.svg'
 import styles from './Header.module.css'
 import { useSelector } from '../../hooks/useSelector'
 import { setLanguage } from '../../store/language/actionCreators'
+import userSlice from '../../store/user/userSlice'
 
-const Header: React.FC = memo(() => {
-  const history = useHistory()
+interface JwtPayload extends DefaultJwtPayload {
+  username: string
+}
+
+export const Header: React.FC = memo(() => {
   const language = useSelector(state => state.language.language, shallowEqual)
+  const jwt = useSelector(state => state.userReducer.token, shallowEqual)
   const languageList = useSelector(
     state => state.language.languageList,
     shallowEqual
   )
+
+  const [username, setUsername] = useState('')
+
+  useEffect(() => {
+    if (jwt) {
+      const token = jwt_decode<JwtPayload>(jwt)
+      setUsername(token.username)
+    }
+  }, [jwt])
+
   const dispatch = useDispatch()
-  // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>();
+  const history = useHistory()
   const { t } = useTranslation()
 
   const menuClickHandler = useCallback(e => dispatch(setLanguage(e.key)), [
     dispatch
   ])
+
+  const handleLogout = () => {
+    dispatch(userSlice.actions.logout())
+    history.push('/')
+  }
 
   return (
     <div className={styles['app-header']}>
@@ -46,14 +67,22 @@ const Header: React.FC = memo(() => {
           >
             {language === 'zh' ? '中文' : 'English'}
           </Dropdown.Button>
-          <Button.Group className={styles['button-group']}>
-            <Button onClick={() => history.push('register')}>
-              {t('header.register')}
-            </Button>
-            <Button onClick={() => history.push('signIn')}>
-              {t('header.signin')}
-            </Button>
-          </Button.Group>
+          {jwt ? (
+            <Button.Group className={styles['button-group']}>
+              <Typography.Text strong>{username}</Typography.Text>
+              <Button>购物车</Button>
+              <Button onClick={handleLogout}>注销</Button>
+            </Button.Group>
+          ) : (
+            <Button.Group className={styles['button-group']}>
+              <Button onClick={() => history.push('register')}>
+                {t('header.register')}
+              </Button>
+              <Button onClick={() => history.push('signIn')}>
+                {t('header.signin')}
+              </Button>
+            </Button.Group>
+          )}
         </div>
       </div>
       <Layout.Header className={styles['main-header']}>
@@ -66,6 +95,7 @@ const Header: React.FC = memo(() => {
         <Input.Search
           placeholder={'请输入旅游目的地、主题、或关键字'}
           className={styles['search-input']}
+          onSearch={keywords => history.push('/search/' + keywords)}
         />
       </Layout.Header>
       <Menu mode={'horizontal'} className={styles['main-menu']}>

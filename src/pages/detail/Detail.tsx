@@ -10,7 +10,7 @@ import {
   Anchor,
   Menu
 } from 'antd'
-import detailSlice, {getDetailThunk} from '../../store/detail/slice'
+import {getDetailThunk} from '../../store/detail/slice'
 import { useSelector } from '../../hooks/useSelector'
 import { useDispatch, shallowEqual } from 'react-redux'
 import styles from './detail.module.css'

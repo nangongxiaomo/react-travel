@@ -95,7 +95,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 })
 
-export const Header = connect(
+const Header = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation()(withRouter(HeaderComponent)))

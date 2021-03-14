@@ -16,13 +16,7 @@ const initialState: DetailState = {
 export const getDetailThunk = createAsyncThunk(
   'detail/getDetailThunk',
   async (id: string) => {
-    // try {
-    // thunkAPI.dispatch(detailSlice.actions.fetchStart())
     const data = await getDetail(id)
-    // thunkAPI.dispatch(detailSlice.actions.fetchSuccess(data))
-    // } catch (error) {
-    //   thunkAPI.dispatch(detailSlice.actions.fetchFail(error.message))
-    // }
     return data
   }
 )

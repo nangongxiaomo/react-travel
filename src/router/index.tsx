@@ -9,6 +9,13 @@ const routes = [
     )
   },
   {
+    path: '/search/:keywords?',
+    exact: true,
+    component: lazy(
+      () => import(/* webpackChunkName: "search" */ '../pages/search/Search')
+    )
+  },
+  {
     path: '/detail/:id',
     exact: false,
     component: lazy(
@@ -16,10 +23,16 @@ const routes = [
     )
   },
   {
-    path: '/signIn',
+    path: '/register',
     component: lazy(
       () =>
-        import(/* webpackChunkName: "signOut" */ '../pages/signIn/SignIn')
+        import(/* webpackChunkName: "signOut" */ '../pages/register/Register')
+    )
+  },
+  {
+    path: '/signIn',
+    component: lazy(
+      () => import(/* webpackChunkName: "signOut" */ '../pages/signIn/SignIn')
     )
   }
 ]

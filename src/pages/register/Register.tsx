@@ -1,10 +1,7 @@
-import { memo, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, message } from 'antd'
-import { shallowEqual, useDispatch } from 'react-redux'
-import { getUserThunk } from '../../store/user/userSlice'
-import { useSelector } from '../../hooks/useSelector'
-import styles from './signIn.module.css'
+import { useHistory } from 'react-router-dom'
+import styles from './register.module.css'
+import { getRegister } from '../../http/api'
 
 const layout = {
   labelCol: { span: 8 },
@@ -14,28 +11,28 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 }
 }
 
-const SignIn: React.FC = memo(() => {
-  const loading = useSelector(s => s.userReducer.loading, shallowEqual)
-  const jwt = useSelector(s => s.userReducer.token, shallowEqual)
-
+const Register: React.FC = () => {
   const history = useHistory()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (jwt) {
-      history.push('/')
-    }
-  }, [jwt])
-
   const onFinish = async (values: any) => {
-    const { username, password } = values
-    dispatch(getUserThunk({ email: username, password: password }))
+    const { username, password, comfirm } = values
+    try {
+      await getRegister({
+        email: username,
+        password: password,
+        confirmPassword: comfirm
+      })
+      history.push('/signIn')
+    } catch (error) {
+      message.error('注册失败')
+    }
   }
+
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
   }
+
   return (
-    <div className={styles['signin-container']}>
+    <div className={styles['register-container']}>
       <Form
         {...layout}
         name="basic"
@@ -58,19 +55,37 @@ const SignIn: React.FC = memo(() => {
         >
           <Input.Password />
         </Form.Item>
+        <Form.Item
+          label="Comfirm Password"
+          name="comfirm"
+          hasFeedback
+          rules={[
+            { required: true, message: 'Please input your comfirm password!' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve()
+                }
+                return Promise.reject('密码不一致')
+              }
+            })
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
 
         <Form.Item {...tailLayout} name="remember" valuePropName="checked">
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
         <Form.Item {...tailLayout}>
-          <Button loading={loading} type="primary" htmlType="submit">
-            登录
+          <Button type="primary" htmlType="submit">
+            注册
           </Button>
         </Form.Item>
       </Form>
     </div>
   )
-})
+}
 
-export default SignIn
+export default Register

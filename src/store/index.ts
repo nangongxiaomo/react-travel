@@ -1,34 +1,40 @@
-import { createStore, applyMiddleware, compose } from 'redux'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import thunk from 'redux-thunk'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import reducer from './language/languageReducer'
 import recommendReducer from './recommendProduct/recommendReducer'
 import { actionLog } from './middlewares/middlewares'
 import detailSlice from './detail/slice'
+import { searchSlice } from './search/searchSlice'
+import userSlice from './user/userSlice'
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()
-  ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-  : compose
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['userReducer']
+}
 
 const rootReducers = combineReducers({
   language: reducer,
   recommendReducer,
-  detailSliceReducer: detailSlice.reducer
+  detailSliceReducer: detailSlice.reducer,
+  searchReducer: searchSlice.reducer,
+  userReducer: userSlice.reducer
 })
 
-/* eslint-disable no-underscore-dangle */
-// const store = createStore(
-//   rootReducers,
-//   composeEnhancers(applyMiddleware(thunk, actionLog))
-// )
+const persistedReducer = persistReducer(persistConfig, rootReducers)
+
 const store = configureStore({
-  reducer: rootReducers,
-  middleware: getDefaultMiddleware => [...getDefaultMiddleware(), actionLog],
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware => [
+    ...getDefaultMiddleware({ serializableCheck: false }),
+    actionLog
+  ],
   devTools: true
 })
 
-/* eslint-enable */
+const persistedStore = persistStore(store)
 
 export type RootState = ReturnType<typeof store.getState>
 
-export default store
+export default { persistedStore, store }
